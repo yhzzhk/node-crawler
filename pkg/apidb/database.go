@@ -28,6 +28,8 @@ func CreateDB(db *sql.DB) error {
 			language_version    TEXT,
 			last_crawled        DATETIME,
 			country_name        TEXT,
+			networkid           TEXT,
+			forkid              TEXT,
 
 			PRIMARY KEY (ID)
 		);
@@ -60,9 +62,11 @@ func InsertCrawledNodes(db *sql.DB, crawledNodes []crawlerdb.CrawledNode) error 
 			language_name,
 			language_version,
 			last_crawled,
-			country_name
+			country_name,
+			networkid,
+			forkid
 		)
-		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
 		ON CONFLICT(id) DO UPDATE
 		SET
 			name = excluded.name,
@@ -77,7 +81,9 @@ func InsertCrawledNodes(db *sql.DB, crawledNodes []crawlerdb.CrawledNode) error 
 			language_name = excluded.language_name,
 			language_version = excluded.language_version,
 			last_crawled = excluded.last_crawled,
-			country_name = excluded.country_name
+			country_name = excluded.country_name,
+			networkid = excluded.networkid,
+			forkid = excluded.forkid
 		WHERE
 			name = excluded.name
 			OR excluded.name != "unknown"
@@ -111,6 +117,8 @@ func InsertCrawledNodes(db *sql.DB, crawledNodes []crawlerdb.CrawledNode) error 
 				parsed.Language.Version,
 				time.Now(),
 				node.Country,
+				node.NetworkID,
+				node.ForkID,
 			)
 			if err != nil {
 				panic(err)
