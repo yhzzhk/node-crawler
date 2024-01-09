@@ -21,6 +21,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"fmt"
 
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/log"
@@ -116,18 +117,22 @@ func (c *crawler) Run(timeout time.Duration) common.NodeSet {
 		inputSetLen  = len(c.output)
 	)
 	defer timeoutTimer.Stop()
-
+	var countt=0
 	for _, it := range c.iters {
+		countt = countt + 1
+		fmt.Println("iters个数:",countt)
 		go c.runIterator(doneCh, it)
 	}
 
 	for i := c.workers; i > 0; i-- {
 		c.Add(1)
+		// fmt.Printf("第%d个workers", c.workers-i)
 		go c.getClientInfoLoop()
 	}
 
 loop:
 	for {
+		
 		select {
 		case n := <-c.ch:
 			c.updateNode(n)
@@ -143,6 +148,8 @@ loop:
 				break loop
 			}
 		case <-timeoutCh:
+			fmt.Println("活跃的iters数:", liveIters)
+			fmt.Println("timeout超时跳出循环")
 			break loop
 		}
 	}
@@ -262,6 +269,7 @@ func (c *crawler) updateNode(n *enode.Node) {
 		c.reqCh <- n
 		c.output[n.ID()] = node
 	}
+	time.Sleep(5 * time.Second)
 }
 
 func (c Crawler) CrawlRound(
@@ -269,30 +277,119 @@ func (c Crawler) CrawlRound(
 	db *sql.DB,
 	geoipDB *geoip2.Reader,
 ) common.NodeSet {
-	var v4, v5 common.NodeSet
+	// var v4, v5 common.NodeSet
+	var v4, v5, vv4, vv5 common.NodeSet
 	var wg sync.WaitGroup
+	// 并发v4 收集结果通道
+	resultsCh4 := make(chan common.NodeSet)
+	resultsCh5 := make(chan common.NodeSet)
+	var test common.NodeSet = make(common.NodeSet)
+	vv4= make(common.NodeSet)
+	vv5 = make(common.NodeSet)
+
+	// wg.Add(1)
+	// go func() {
+	// 	defer wg.Done()
+	// 	v5 = c.discv5(inputSet)
+	// 	log.Info("DiscV5", "nodes", len(v5.Nodes()))
+	// }()
+
+	// wg.Add(1)
+	// go func() {
+	// 	defer wg.Done()
+	// 	v4 = c.discv4(inputSet)
+	// 	log.Info("DiscV4", "nodes", len(v4.Nodes()))
+	// }()
+	//v5发现
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		v5 = c.discv5(inputSet)
-		log.Info("DiscV5", "nodes", len(v5.Nodes()))
+		vv5 = c.discv5(inputSet)
+		resultsCh5 <- vv5
+		// log.Info("DiscV5", "nodes", len(v5.Nodes()))
+		fmt.Printf("DiscV5-检验inputSet:%d", len(vv5.Nodes()))
 	}()
+	for i := 0; i < 5; i++ {
+        wg.Add(1)
+        go func() {
+            defer wg.Done()
+            // 这里是运行单个discv4实例的逻辑
+            vv5 = c.discv5(test)
+            // log.Info("DiscV5", "nodes", len(vv5.Nodes()))
+			fmt.Printf("DiscV5-第%d个个数:%d", i, len(vv5.Nodes()))
+			resultsCh5 <- vv5
+            // 将结果合并到最终的节点集
+        }()
+    }
+
+	// wg.Wait()
+	go func() {
+        wg.Wait()
+        close(resultsCh5)
+    }()
+
+	// 合并结果
+	v5 = make(common.NodeSet)
+	for result := range resultsCh5 {
+		for key, value := range result {
+			v5[key] = value // 假设NodeSet是一个映射
+		}
+	}
 
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		v4 = c.discv4(inputSet)
-		log.Info("DiscV4", "nodes", len(v4.Nodes()))
+		vv4 = c.discv4(inputSet)
+		resultsCh4 <- vv4
+		// log.Info("DiscV4", "nodes", len(v4.Nodes()))
+		fmt.Printf("DiscV4-检验inputSet:%d", len(vv4.Nodes()))
 	}()
 
-	wg.Wait()
+	
 
-	output := make(common.NodeSet, len(v5)+len(v4))
-	for _, n := range v5 {
+	 //v4发现
+	for i := 0; i < 5; i++ {
+        wg.Add(1)
+        go func() {
+            defer wg.Done()
+            // 这里是运行单个discv4实例的逻辑
+            vv4 = c.discv4(test)
+            // log.Info("DiscV4", "nodes", len(vv4.Nodes()))
+			fmt.Printf("DiscV4-第%d个个数:%d", i, len(vv4.Nodes()))
+			resultsCh4 <- vv4
+            // 将结果合并到最终的节点集
+        }()
+    }
+
+	// wg.Wait()
+	go func() {
+        wg.Wait()
+        close(resultsCh4)
+    }()
+
+	 
+	 // 合并结果
+	 v4 = make(common.NodeSet)
+	 for result := range resultsCh4 {
+		 for key, value := range result {
+			 v4[key] = value // 假设NodeSet是一个映射
+		 }
+	 }
+
+
+
+	// output := make(common.NodeSet, len(v5)+len(v4))
+	// for _, n := range v5 {
+	// 	output[n.N.ID()] = n
+	// }
+	log.Info("DiscV5", "nodes", len(v5.Nodes()))
+	log.Info("DiscV4", "nodes", len(v4.Nodes()))
+	output := make(common.NodeSet, len(v4)+len(v5))
+	for _, n := range v4 {
 		output[n.N.ID()] = n
 	}
-	for _, n := range v4 {
+	for _, n := range v5 {
 		output[n.N.ID()] = n
 	}
 
@@ -343,6 +440,13 @@ func (c Crawler) runCrawler(disc resolver, inputSet common.NodeSet) common.NodeS
 	if genesis == nil {
 		genesis = core.DefaultGenesisBlock()
 	}
+
+	// 创建一个包含10个enode.Iterator的切片
+	// var iterators []enode.Iterator
+	// for i := 0; i < 10; i++ {
+	// 	iterator := disc.RandomNodes() // 假设每次调用返回一个新的enode.Iterator
+	// 	iterators = append(iterators, iterator)
+	// }
 
 	crawler := NewCrawler(genesis, c.NetworkID, c.NodeURL, inputSet, c.Workers, disc, disc.RandomNodes())
 	crawler.revalidateInterval = 10 * time.Minute

@@ -1,0 +1,118 @@
+nohup: ignoring input
+Creating network "node-crawler_crawler_net" with driver "bridge"
+Creating network "node-crawler_default" with the default driver
+Building crawler
+Step 1/9 : FROM golang:1.21-alpine AS builder
+ ---> 022acf67d71d
+Step 2/9 : WORKDIR /app
+ ---> Using cache
+ ---> 5cfb1a84fcc9
+Step 3/9 : COPY go.mod go.sum ./
+ ---> Using cache
+ ---> 2b20771b4df4
+Step 4/9 : RUN go mod download
+ ---> Using cache
+ ---> 1d2b90adad49
+Step 5/9 : COPY ./ ./
+ ---> b93132b4190f
+Step 6/9 : RUN go build ./cmd/crawler
+ ---> Running in b1708429e3e3
+Removing intermediate container b1708429e3e3
+ ---> d71470e621e9
+Step 7/9 : FROM alpine
+ ---> f8c20f8bbcb6
+Step 8/9 : COPY --from=builder /app/crawler /app/crawler
+ ---> Using cache
+ ---> 758b12b3492d
+Step 9/9 : ENTRYPOINT ["/app/crawler"]
+ ---> Using cache
+ ---> d13b079fb62f
+Successfully built d13b079fb62f
+Successfully tagged node-crawler_crawler:latest
+Building api
+Step 1/9 : FROM golang:1.21-alpine AS builder
+ ---> 022acf67d71d
+Step 2/9 : WORKDIR /app
+ ---> Using cache
+ ---> 5cfb1a84fcc9
+Step 3/9 : COPY go.mod go.sum ./
+ ---> Using cache
+ ---> 2b20771b4df4
+Step 4/9 : RUN go mod download
+ ---> Using cache
+ ---> 1d2b90adad49
+Step 5/9 : COPY ./ ./
+ ---> 1779af41dbd0
+Step 6/9 : RUN go build ./cmd/crawler
+ ---> Running in b55ed07c69d4
+Removing intermediate container b55ed07c69d4
+ ---> 83542a3afecd
+Step 7/9 : FROM alpine
+ ---> f8c20f8bbcb6
+Step 8/9 : COPY --from=builder /app/crawler /app/crawler
+ ---> Using cache
+ ---> 758b12b3492d
+Step 9/9 : ENTRYPOINT ["/app/crawler"]
+ ---> Using cache
+ ---> d13b079fb62f
+Successfully built d13b079fb62f
+Successfully tagged node-crawler_api:latest
+Creating node-crawler_neo4j_1 ... 
+[1A[2KCreating node-crawler_neo4j_1 ... [32mdone[0m[1BCreating node-crawler_crawler_1 ... 
+[1A[2KCreating node-crawler_crawler_1 ... [32mdone[0m[1BCreating node-crawler_api_1     ... 
+[1A[2KCreating node-crawler_api_1     ... [32mdone[0m[1BAttaching to node-crawler_neo4j_1, node-crawler_crawler_1, node-crawler_api_1
+[33mcrawler_1   |[0m Failed to connect to Neo4j (attempt 1/5), retrying in 10s...
+[36mapi_1       |[0m INFO [01-09|04:28:20.663] DB did not exist, init 
+[36mapi_1       |[0m INFO [01-09|04:28:20.683] Starting API                             address=0.0.0.0:10000
+[36mapi_1       |[0m ERROR[01-09|04:28:20.685] Failure in transferring new nodes        err="error reading nodes: SQL logic error: no such table: nodes (1)"
+[32mneo4j_1     |[0m Warning: Some files inside "/data" are not writable from inside container. Changing folder owner to neo4j.
+[32mneo4j_1     |[0m Changed password for user 'neo4j'. IMPORTANT: this change will only take effect if performed before the database is started for the first time.
+[32mneo4j_1     |[0m 2024-01-09 04:28:27.705+0000 INFO  Logging config in use: File '/var/lib/neo4j/conf/user-logs.xml'
+[32mneo4j_1     |[0m 2024-01-09 04:28:27.740+0000 INFO  Starting...
+[32mneo4j_1     |[0m 2024-01-09 04:28:28.982+0000 INFO  This instance is ServerId{77dc80d8} (77dc80d8-569d-484d-9864-1adcdb0f709c)
+[32mneo4j_1     |[0m 2024-01-09 04:28:29.876+0000 INFO  ======== Neo4j 5.15.0 ========
+[33mcrawler_1   |[0m Failed to connect to Neo4j (attempt 2/5), retrying in 10s...
+[32mneo4j_1     |[0m 2024-01-09 04:28:31.686+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.548+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.549+0000 INFO  Remote interface available at http://localhost:7474/
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.552+0000 INFO  id: F5DB2FA70DF9001E3F41A6F5391C5D7EE395B9C938740FCD636711FC639AC41F
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.553+0000 INFO  name: system
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.553+0000 INFO  creationDate: 2024-01-02T21:27:26.802Z
+[32mneo4j_1     |[0m 2024-01-09 04:28:32.554+0000 INFO  Started.
+[33mcrawler_1   |[0m Failed to connect to Neo4j (attempt 3/5), retrying in 10s...
+[33mcrawler_1   |[0m Failed to connect to Neo4j (attempt 4/5), retrying in 10s...
+[33mcrawler_1   |[0m Failed to connect to Neo4j (attempt 5/5), retrying in 10s...
+[33mcrawler_1   |[0m Unable to connect to Neo4j: dial tcp 127.0.0.1:7687: connect: connection refused
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.563] Connected to db 
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.575] New local node record                    seq=1,704,774,550,574 id=4ea17199c4694e89 ip=127.0.0.1 udp=49527 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.576] New local node record                    seq=1,704,774,550,574 id=4a0e7f81c46b1195 ip=127.0.0.1 udp=60611 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.576] New local node record                    seq=1,704,774,550,574 id=60167ea19f9e041b ip=127.0.0.1 udp=51825 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.579] New local node record                    seq=1,704,774,550,575 id=f7932a4cfee55d51 ip=127.0.0.1 udp=46319 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.579] New local node record                    seq=1,704,774,550,576 id=943571f4c5047885 ip=127.0.0.1 udp=53953 tcp=0
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.608] New local node record                    seq=1,704,774,550,576 id=406b376fad76b327 ip=127.0.0.1 udp=58634 tcp=0
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.619] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m iters个数: 1
+[33mcrawler_1   |[0m iters个数: 2
+[33mcrawler_1   |[0m INFO [01-09|04:29:10.627] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:11.987] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:12.684] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:12.685] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m INFO [01-09|04:29:12.699] Revalidation of input set is done        len=0
+[36mapi_1       |[0m ERROR[01-09|04:29:20.686] Failure in transferring new nodes        err="error reading nodes: SQL logic error: no such table: nodes (1)"
+[36mnode-crawler_api_1 exited with code 2
+[0m[33mnode-crawler_crawler_1 exited with code 2
+[0m[32mneo4j_1     |[0m 2024-01-09 04:29:52.158+0000 INFO  Neo4j Server shutdown initiated by request
+[32mneo4j_1     |[0m 2024-01-09 04:29:52.158+0000 INFO  Stopping...
+[32mneo4j_1     |[0m 2024-01-09 04:29:57.278+0000 INFO  Stopped.
+[32mnode-crawler_neo4j_1 exited with code 0
+[0m

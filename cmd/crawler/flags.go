@@ -61,6 +61,7 @@ var (
 	nodeFileFlag = &cli.StringFlag{
 		Name:  "nodefile",
 		Usage: "Path to a node file containing nodes to be crawled",
+		Value: "./data/nodes.json",
 	}
 	nodekeyFlag = &cli.StringFlag{
 		Name:  "nodekey",
@@ -74,11 +75,11 @@ var (
 	timeoutFlag = &cli.DurationFlag{
 		Name:  "timeout",
 		Usage: "Timeout for the crawling in a round",
-		Value: 5 * time.Minute,
+		Value: 20 * time.Minute,
 	}
 	workersFlag = &cli.Uint64Flag{
 		Name:  "workers",
 		Usage: "Number of workers to start for updating nodes",
-		Value: 16,
+		Value: 50,
 	}
 )

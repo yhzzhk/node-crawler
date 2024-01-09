@@ -51,7 +51,7 @@ func getClientInfo(genesis *core.Genesis, networkID uint64, nodeURL string, n *e
 		return &info, nil
 	}
 
-	if err = conn.SetDeadline(time.Now().Add(15 * time.Second)); err != nil {
+	if err = conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 		return nil, fmt.Errorf("cannot set conn deadline: %w", err)
 	}
 
@@ -78,7 +78,7 @@ func dial(n *enode.Node) (*Conn, *ecdsa.PrivateKey, error) {
 	var conn Conn
 
 	// dial
-	dialer := net.Dialer{Timeout: 10 * time.Second}
+	dialer := net.Dialer{Timeout: 5 * time.Second}
 	fd, err := dialer.Dial("tcp", fmt.Sprintf("%v:%d", n.IP(), n.TCP()))
 	if err != nil {
 		return nil, nil, err
@@ -86,7 +86,7 @@ func dial(n *enode.Node) (*Conn, *ecdsa.PrivateKey, error) {
 
 	conn.Conn = rlpx.NewConn(fd, n.Pubkey())
 
-	if err = conn.SetDeadline(time.Now().Add(15 * time.Second)); err != nil {
+	if err = conn.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
 		return nil, nil, fmt.Errorf("cannot set conn deadline: %w", err)
 	}
 

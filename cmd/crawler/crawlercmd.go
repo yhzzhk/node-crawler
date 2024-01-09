@@ -19,6 +19,9 @@ package main
 import (
 	"database/sql"
 	"os"
+	"time"
+    "net"
+	"fmt"
 
 	_ "modernc.org/sqlite"
 
@@ -60,7 +63,33 @@ var (
 	}
 )
 
+func checkNeo4jConnection(host string, maxRetries int, delay time.Duration) error {
+    retries := 0
+    for {
+        conn, err := net.DialTimeout("tcp", host, 10*time.Second)
+        if err != nil {
+            if retries >= maxRetries {
+                return err
+            }
+            retries++
+            fmt.Printf("Failed to connect to Neo4j (attempt %d/%d), retrying in %s...\n", retries, maxRetries, delay)
+            time.Sleep(delay)
+            continue
+        }
+        conn.Close()
+        break
+    }
+    fmt.Println("Successfully connected to Neo4j")
+    return nil
+}
+
 func crawlNodes(ctx *cli.Context) error {
+	// 检查 Neo4j 服务是否可用
+    err := checkNeo4jConnection("localhost:7687", 5, 10*time.Second)
+    if err != nil {
+        fmt.Printf("Unable to connect to Neo4j: %v\n", err)
+    }
+
 	var inputSet common.NodeSet
 	var geoipDB *geoip2.Reader
 
@@ -108,6 +137,8 @@ func crawlNodes(ctx *cli.Context) error {
 		}
 		defer func() { _ = geoipDB.Close() }()
 	}
+
+
 
 	crawler := crawler.Crawler{
 		NetworkID:  ctx.Uint64(utils.NetworkIdFlag.Name),

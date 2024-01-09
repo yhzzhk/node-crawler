@@ -22,6 +22,7 @@ import (
 	"path/filepath"
 
 	"github.com/urfave/cli/v2"
+	// "github.com/joho/godotenv"
 )
 
 var (
@@ -47,6 +48,12 @@ func init() {
 }
 
 func main() {
+	// // 加载 .env 文件
+    // err := godotenv.Load()
+    // if err != nil {
+    //     fmt.Println("Error loading .env file")
+    //     os.Exit(1)
+    // }
 	err := app.Run(os.Args)
 	if err != nil {
 		fmt.Println(err)

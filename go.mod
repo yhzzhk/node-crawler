@@ -1,6 +1,6 @@
 module github.com/ethereum/node-crawler
 
-go 1.21
+go 1.20
 
 require (
 	github.com/ethereum/go-ethereum v1.13.2
@@ -72,6 +72,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/mitchellh/pointerstructure v1.2.0 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
+	github.com/neo4j/neo4j-go-driver/v5 v5.15.0 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
 	github.com/oschwald/maxminddb-golang v1.11.0 // indirect
@@ -118,3 +119,5 @@ require (
 	modernc.org/token v1.0.1 // indirect
 	rsc.io/tmplfunc v0.0.3 // indirect
 )
+
+replace github.com/ethereum/go-ethereum v1.13.2 => github.com/yhzzhk/go-ethereum v0.0.0-20240102201110-f39761b6a571

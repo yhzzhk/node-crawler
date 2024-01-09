@@ -37,7 +37,7 @@ func New(address string, sdb *sql.DB) *Api {
 
 func (a *Api) dropCacheLoop() {
 	// Drop the cache every 2 minutes
-	ticker := time.NewTicker(2 * time.Minute)
+	ticker := time.NewTicker(10 * time.Minute)
 	for range ticker.C {
 		log.Info("Dropping Cache")
 		c, err := lru.New(256)

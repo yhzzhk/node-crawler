@@ -1,18 +1,22 @@
 version: '3'
 
-# networks:
-#   crawler_net:
-#     driver: bridge
+networks:
+  crawler_net:
+    driver: bridge
 
 services:
   crawler:
     build: ./
     volumes:
      - ./data:/data
+    networks:
+      - crawler_net
+    depends_on:
+     - neo4j
     command:
       - crawl
       - --timeout
-      - 10m
+      - 20m
       - --crawler-db
       - /data/crawler.db
       # Make sure you have the GeoLite DB in the ./data directory.
@@ -24,21 +28,23 @@ services:
     build: ./
     volumes:
      - ./data:/data
+    networks:
+      - crawler_net
     depends_on:
      - crawler
     command: "api --crawler-db /data/crawler.db --api-db /data/api.db"
 
-  # neo4j-db:
-  #   image: neo4j:latest
-  #   ports:
-  #     - "7474:7474" # Neo4j web interface
-  #     - "7687:7687" # Neo4j Bolt protocol
-  #   environment:
-  #     NEO4J_AUTH: neo4j/testpassword # 设置用户名和密码
-  #   volumes:
-  #     - ./data:/data # 持久化数据
-  #   networks:
-  #     - crawler_net
+  neo4j:
+    image: neo4j:latest
+    ports:
+      - "7474:7474" # Neo4j web interface
+      - "7687:7687" # Neo4j Bolt protocol
+    environment:
+      NEO4J_AUTH: neo4j/testpassword
+    volumes:
+      - ./data:/data # 持久化数据
+    networks:
+      - crawler_net
 
   frontend:
     build: ./frontend
