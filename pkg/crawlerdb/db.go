@@ -169,5 +169,9 @@ func CreateDB(db *sql.DB) error {
 	DELETE FROM nodes;
 	`
 	_, err := db.Exec(sqlStmt)
+	if err != nil {
+		log.Error("Error creating table: ", err)
+		return err
+	}
 	return err
 }
