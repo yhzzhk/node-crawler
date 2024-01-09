@@ -1,0 +1,419 @@
+nohup: ignoring input
+Creating network "node-crawler_default" with the default driver
+Building crawler
+Step 1/9 : FROM golang:1.21-alpine AS builder
+ ---> 022acf67d71d
+Step 2/9 : WORKDIR /app
+ ---> Using cache
+ ---> 5cfb1a84fcc9
+Step 3/9 : COPY go.mod go.sum ./
+ ---> Using cache
+ ---> 7503e2ad9177
+Step 4/9 : RUN go mod download
+ ---> Using cache
+ ---> dea94a1493e2
+Step 5/9 : COPY ./ ./
+ ---> d390ae90acad
+Step 6/9 : RUN go build ./cmd/crawler
+ ---> Running in c2c526bb2f26
+Removing intermediate container c2c526bb2f26
+ ---> 8762bb0b317b
+Step 7/9 : FROM alpine
+ ---> f8c20f8bbcb6
+Step 8/9 : COPY --from=builder /app/crawler /app/crawler
+ ---> Using cache
+ ---> 46ca1474663d
+Step 9/9 : ENTRYPOINT ["/app/crawler"]
+ ---> Using cache
+ ---> 803b0b91d7c3
+Successfully built 803b0b91d7c3
+Successfully tagged node-crawler_crawler:latest
+Building api
+Step 1/9 : FROM golang:1.21-alpine AS builder
+ ---> 022acf67d71d
+Step 2/9 : WORKDIR /app
+ ---> Using cache
+ ---> 5cfb1a84fcc9
+Step 3/9 : COPY go.mod go.sum ./
+ ---> Using cache
+ ---> 7503e2ad9177
+Step 4/9 : RUN go mod download
+ ---> Using cache
+ ---> dea94a1493e2
+Step 5/9 : COPY ./ ./
+ ---> 1e97da49dce6
+Step 6/9 : RUN go build ./cmd/crawler
+ ---> Running in fff3e92f3d6e
+Removing intermediate container fff3e92f3d6e
+ ---> d4f639276fe8
+Step 7/9 : FROM alpine
+ ---> f8c20f8bbcb6
+Step 8/9 : COPY --from=builder /app/crawler /app/crawler
+ ---> Using cache
+ ---> 46ca1474663d
+Step 9/9 : ENTRYPOINT ["/app/crawler"]
+ ---> Using cache
+ ---> 803b0b91d7c3
+Successfully built 803b0b91d7c3
+Successfully tagged node-crawler_api:latest
+Creating node-crawler_crawler_1 ... 
+[1A[2KCreating node-crawler_crawler_1 ... [32mdone[0m[1BCreating node-crawler_api_1     ... 
+[1A[2KCreating node-crawler_api_1     ... [32mdone[0m[1BAttaching to node-crawler_crawler_1, node-crawler_api_1
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.392] Connected to db 
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.399] New local node record                    seq=1,704,783,675,397 id=4234e52c2a47887a ip=127.0.0.1 udp=44711 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.401] New local node record                    seq=1,704,783,675,398 id=511c1c97d0f7bc0f ip=127.0.0.1 udp=51935 tcp=0
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.416] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.420] Updating node                            id=c845e51a5e470e44 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:15.423] Revalidation of input set is done        len=0
+[33mcrawler_1   |[0m WARN [01-09|07:01:15.426] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=c845e51a5e470e44
+[36mapi_1       |[0m INFO [01-09|07:01:15.470] Starting API                             address=0.0.0.0:10000
+[36mapi_1       |[0m ERROR[01-09|07:01:15.472] Failure in transferring new nodes        err="error reading nodes: SQL logic error: no such table: nodes (1)"
+[33mcrawler_1   |[0m INFO [01-09|07:01:16.423] Updating node                            id=ef2d7ab886910dc8 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:16.944] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=ef2d7ab886910dc8
+[33mcrawler_1   |[0m INFO [01-09|07:01:17.408] Updating node                            id=f23ac6da7c02f84a seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:17.650] Updating node                            id=6b36f791352f15eb seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:17.880] New local node record                    seq=1,704,783,675,398 id=4234e52c2a47887a ip=43.128.99.239 udp=44711 tcp=0
+[33mcrawler_1   |[0m WARN [01-09|07:01:17.897] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=f23ac6da7c02f84a
+[33mcrawler_1   |[0m INFO [01-09|07:01:18.450] Updating node info                       client_type=Geth/v1.13.5-stable-916d6a44/linux-amd64/go1.21.4 version=5 network_id=1 caps="[eth/67 eth/68 snap/1]" fork_id="{Hash:[220 233 108 45] Next:0}" height= td=58,750,003,716,598,352,816,469 head=7beb71..78b3a5
+[33mcrawler_1   |[0m INFO [01-09|07:01:18.536] Updating node                            id=80d70e1a7cd652c8 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:18.910] GetClientInfo failed                     error=EOF nodeID=80d70e1a7cd652c8
+[33mcrawler_1   |[0m INFO [01-09|07:01:19.516] Updating node                            id=8bcda5ef210f837f seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:19.988] GetClientInfo failed                     error=EOF nodeID=8bcda5ef210f837f
+[33mcrawler_1   |[0m INFO [01-09|07:01:20.501] Updating node                            id=933bd0fb9f8d4651 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:20.987] GetClientInfo failed                     error=EOF nodeID=933bd0fb9f8d4651
+[33mcrawler_1   |[0m INFO [01-09|07:01:21.488] Updating node                            id=91ed0929fd9077da seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:21.961] GetClientInfo failed                     error=EOF nodeID=91ed0929fd9077da
+[33mcrawler_1   |[0m INFO [01-09|07:01:22.502] Updating node                            id=a3185ac8b883e3ce seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:23.006] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=a3185ac8b883e3ce
+[33mcrawler_1   |[0m INFO [01-09|07:01:23.485] Updating node                            id=a26bec0b9793b1a1 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:23.973] GetClientInfo failed                     error=EOF nodeID=a26bec0b9793b1a1
+[33mcrawler_1   |[0m INFO [01-09|07:01:24.468] Updating node                            id=a0dcd5697cb1526c seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:25.158] Updating node info                       client_type=erigon/v2.40.0-dev-3da15fcb/linux-amd64/go1.19.7 version=5 network_id=56 caps=[eth/66]                 fork_id="{Hash:[7 181 67 40] Next:1705996800}" height= td=291,135                        head=693136..283b87
+[33mcrawler_1   |[0m INFO [01-09|07:01:25.292] Updating node                            id=bfe8e971721b1695 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:26.280] Updating node                            id=bd16afe14381cbe9 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:27.155] Updating node                            id=c6b1911c7501ed4e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:27.184] GetClientInfo failed                     error="bad status handshake disconnect: subprotocol error" nodeID=bd16afe14381cbe9
+[33mcrawler_1   |[0m INFO [01-09|07:01:28.004] Updating node                            id=c5f3a08e5a22fa15 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:28.347] GetClientInfo failed                     error=EOF nodeID=c5f3a08e5a22fa15
+[33mcrawler_1   |[0m INFO [01-09|07:01:30.003] Updating node                            id=cfe095f26df894ea seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:30.735] GetClientInfo failed                     error="bad status handshake disconnect: too many peers" nodeID=cfe095f26df894ea
+[33mcrawler_1   |[0m INFO [01-09|07:01:31.166] Updating node                            id=cd3ebd5e6f661099 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:31.841] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=cd3ebd5e6f661099
+[33mcrawler_1   |[0m INFO [01-09|07:01:32.160] Updating node                            id=cd34c187963fabaa seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:32.651] GetClientInfo failed                     error=EOF nodeID=cd34c187963fabaa
+[33mcrawler_1   |[0m INFO [01-09|07:01:33.204] Updating node                            id=cc7c792303558e0f seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:33.754] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=cc7c792303558e0f
+[33mcrawler_1   |[0m INFO [01-09|07:01:35.204] Updating node                            id=8e8d4825e38b5607 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:35.292] GetClientInfo failed                     error="dial tcp 3.10.61.247:0: i/o timeout" nodeID=bfe8e971721b1695
+[33mcrawler_1   |[0m WARN [01-09|07:01:35.696] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8e8d4825e38b5607
+[33mcrawler_1   |[0m INFO [01-09|07:01:36.089] Updating node                            id=8b52b848d9e8763e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:36.461] GetClientInfo failed                     error=EOF                                   nodeID=8b52b848d9e8763e
+[33mcrawler_1   |[0m INFO [01-09|07:01:36.730] Updating node                            id=8b9396dee96cfcd7 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:36.870] GetClientInfo failed                     error=EOF                                   nodeID=8b9396dee96cfcd7
+[33mcrawler_1   |[0m WARN [01-09|07:01:37.155] GetClientInfo failed                     error="dial tcp 176.112.254.217:30303: i/o timeout" nodeID=c6b1911c7501ed4e
+[33mcrawler_1   |[0m INFO [01-09|07:01:37.237] Updating node                            id=96cf5ebe239879a2 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:39.261] Updating node                            id=9d2a143c74170080 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:39.605] GetClientInfo failed                     error=EOF                                   nodeID=9d2a143c74170080
+[33mcrawler_1   |[0m INFO [01-09|07:01:40.095] Updating node                            id=9a2bb2b8dab89d60 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:40.437] GetClientInfo failed                     error=EOF                                   nodeID=9a2bb2b8dab89d60
+[33mcrawler_1   |[0m INFO [01-09|07:01:41.078] Updating node                            id=a0f8fd8b079283a7 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:41.555] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=a0f8fd8b079283a7
+[33mcrawler_1   |[0m INFO [01-09|07:01:41.917] Updating node                            id=af1a0a0c946610fa seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:42.254] GetClientInfo failed                     error=EOF                                   nodeID=af1a0a0c946610fa
+[33mcrawler_1   |[0m INFO [01-09|07:01:42.746] Updating node                            id=ab76c40650688522 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:43.074] GetClientInfo failed                     error=EOF                                   nodeID=ab76c40650688522
+[33mcrawler_1   |[0m INFO [01-09|07:01:43.391] Updating node                            id=bbe0c1744f032d91 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:43.727] Updating node info                       client_type=Geth/v1.2.9-34b065ae-20230721/linux-amd64/go1.19.11 version=5 network_id=56 caps="[bsc/1 eth/66 eth/67 snap/1]" fork_id="{Hash:[177 157 244 162] Next:0}"      height= td=69,707,841                     head=7b7f7a..0f71c8
+[33mcrawler_1   |[0m INFO [01-09|07:01:44.231] Updating node                            id=c7c2937f714d5cbd seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:44.562] GetClientInfo failed                     error=EOF                                   nodeID=c7c2937f714d5cbd
+[33mcrawler_1   |[0m INFO [01-09|07:01:45.214] Updating node                            id=c54ff63b96192700 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:45.712] GetClientInfo failed                     error=EOF                                   nodeID=c54ff63b96192700
+[33mcrawler_1   |[0m INFO [01-09|07:01:46.029] Updating node                            id=c061ec765323f45c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:46.537] GetClientInfo failed                     error="bad status handshake disconnect: too many peers" nodeID=c061ec765323f45c
+[33mcrawler_1   |[0m INFO [01-09|07:01:46.877] Updating node                            id=cded96dea59c8ba0 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:47.218] GetClientInfo failed                     error=EOF                                   nodeID=cded96dea59c8ba0
+[33mcrawler_1   |[0m INFO [01-09|07:01:47.740] Updating node                            id=8d6883db643f9fca seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:48.104] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8d6883db643f9fca
+[33mcrawler_1   |[0m WARN [01-09|07:01:48.988] GetClientInfo failed                     error=EOF                                   nodeID=96cf5ebe239879a2
+[33mcrawler_1   |[0m INFO [01-09|07:01:52.160] Updating node                            id=a7e3c9cc534a626a seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:52.559] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=a7e3c9cc534a626a
+[33mcrawler_1   |[0m INFO [01-09|07:01:54.359] Updating node                            id=ac778ec50b14f68b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:54.855] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=ac778ec50b14f68b
+[33mcrawler_1   |[0m INFO [01-09|07:01:55.189] Updating node                            id=bc96738e7d396ffe seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:55.520] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=bc96738e7d396ffe
+[33mcrawler_1   |[0m INFO [01-09|07:01:56.855] Updating node                            id=c4292bd1d689486c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:01:56.861] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=c4292bd1d689486c
+[33mcrawler_1   |[0m INFO [01-09|07:01:58.965] Updating node                            id=c0c551d478b3e768 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:01:59.681] Updating node info                       client_type=Geth/v3.0.0-pulse-stable-7975e02e/linux-amd64/go1.20.5 version=5 network_id=369 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[252 100 236 4] Next:1150000}"  height= td=58,750,003,716,598,352,816,469 head=d4e567..cb8fa3
+[33mcrawler_1   |[0m INFO [01-09|07:02:00.648] Updating node                            id=cacbe44d9fe38758 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:01.132] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=cacbe44d9fe38758
+[33mcrawler_1   |[0m INFO [01-09|07:02:01.638] Updating node                            id=d4314a304f5af022 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:02.574] Updating node info                       client_type=Geth/v3.0.0-pulse-stable-7975e02e/linux-amd64/go1.20.5 version=5 network_id=369 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[252 100 236 4] Next:1150000}"  height= td=58,750,003,716,598,352,816,469 head=d4e567..cb8fa3
+[33mcrawler_1   |[0m INFO [01-09|07:02:03.880] Updating node                            id=863fadccc2e0f46b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:04.353] GetClientInfo failed                     error=EOF                                   nodeID=863fadccc2e0f46b
+[33mcrawler_1   |[0m INFO [01-09|07:02:05.855] Updating node                            id=8685b446b0c6ad09 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:06.259] GetClientInfo failed                     error=EOF                                   nodeID=8685b446b0c6ad09
+[33mcrawler_1   |[0m INFO [01-09|07:02:08.343] Updating node                            id=869a2d2baa4f25f0 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:08.829] GetClientInfo failed                     error=EOF                                   nodeID=869a2d2baa4f25f0
+[33mcrawler_1   |[0m INFO [01-09|07:02:09.168] Updating node                            id=86a55e5777171669 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:09.491] GetClientInfo failed                     error=EOF                                   nodeID=86a55e5777171669
+[33mcrawler_1   |[0m INFO [01-09|07:02:10.173] Updating node                            id=86e611fcc7ece1be seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:10.651] GetClientInfo failed                     error=EOF                                   nodeID=86e611fcc7ece1be
+[33mcrawler_1   |[0m INFO [01-09|07:02:10.682] Updating node                            id=87162dc395be400a seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:10.882] Updating node info                       client_type=bor/v1.1.0/linux-amd64/go1.20.10 version=5 network_id=137 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[220 8 134 92] Next:0}"         height= td=934,546,342                    head=48baf0..75c302
+[33mcrawler_1   |[0m INFO [01-09|07:02:11.662] Updating node                            id=873b49f7c4c97f9f seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:12.154] GetClientInfo failed                     error=EOF                                   nodeID=873b49f7c4c97f9f
+[33mcrawler_1   |[0m INFO [01-09|07:02:12.652] Updating node                            id=875e125fe246fc1c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:13.119] GetClientInfo failed                     error=EOF                                   nodeID=875e125fe246fc1c
+[33mcrawler_1   |[0m INFO [01-09|07:02:13.323] Updating node                            id=87a74dd9cc3c1bfc seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:13.493] GetClientInfo failed                     error=EOF                                   nodeID=87a74dd9cc3c1bfc
+[33mcrawler_1   |[0m INFO [01-09|07:02:14.148] Updating node                            id=882a966842e0fdb3 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:14.467] GetClientInfo failed                     error=EOF                                   nodeID=882a966842e0fdb3
+[36mapi_1       |[0m ERROR[01-09|07:02:15.473] Failure in transferring new nodes        err="error reading nodes: SQL logic error: no such table: nodes (1)"
+[33mcrawler_1   |[0m INFO [01-09|07:02:16.212] Updating node                            id=884fc0b6587a5737 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:16.707] GetClientInfo failed                     error=EOF                                   nodeID=884fc0b6587a5737
+[33mcrawler_1   |[0m INFO [01-09|07:02:17.194] Updating node                            id=8856167b3f7ee030 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:17.679] GetClientInfo failed                     error=EOF                                   nodeID=8856167b3f7ee030
+[33mcrawler_1   |[0m INFO [01-09|07:02:18.157] Updating node                            id=88913516cdd4b04b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:18.630] GetClientInfo failed                     error=EOF                                   nodeID=88913516cdd4b04b
+[33mcrawler_1   |[0m INFO [01-09|07:02:19.152] Updating node                            id=870410b3ac5ec953 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:20.132] Updating node                            id=877d015fdbed9d7c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:20.624] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=877d015fdbed9d7c
+[33mcrawler_1   |[0m INFO [01-09|07:02:21.113] Updating node                            id=87a7a1761b62c9e3 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:21.598] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=87a7a1761b62c9e3
+[33mcrawler_1   |[0m INFO [01-09|07:02:22.097] Updating node                            id=87f2f38a4b4816ef seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:22.591] GetClientInfo failed                     error=EOF                                   nodeID=87f2f38a4b4816ef
+[33mcrawler_1   |[0m INFO [01-09|07:02:23.075] Updating node                            id=87c04de719455cad seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:23.812] Updating node info                       client_type=bor/v1.2.0-stable/linux-amd64/go1.21.0 version=5 network_id=137 caps="[eth/66 eth/67 eth/68]"        fork_id="{Hash:[14 7 231 34] Next:3395000}"    height= td=1                              head=a9c28c..97de1b
+[33mcrawler_1   |[0m INFO [01-09|07:02:23.911] Updating node                            id=866056f36eb2975b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:24.259] GetClientInfo failed                     error=EOF                                   nodeID=866056f36eb2975b
+[33mcrawler_1   |[0m INFO [01-09|07:02:24.837] Updating node                            id=86427f0f341d07a3 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:25.262] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=86427f0f341d07a3
+[33mcrawler_1   |[0m INFO [01-09|07:02:25.768] Updating node                            id=86a2a2b13b11c733 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:26.198] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=86a2a2b13b11c733
+[33mcrawler_1   |[0m INFO [01-09|07:02:26.412] Updating node                            id=85a06d556ee82f45 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:26.554] GetClientInfo failed                     error=EOF                                   nodeID=85a06d556ee82f45
+[33mcrawler_1   |[0m INFO [01-09|07:02:27.398] Updating node                            id=859ea90f195d7db1 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:27.886] GetClientInfo failed                     error=EOF                                   nodeID=859ea90f195d7db1
+[33mcrawler_1   |[0m INFO [01-09|07:02:28.232] Updating node                            id=84a03a15ed21d820 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:28.552] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=84a03a15ed21d820
+[33mcrawler_1   |[0m INFO [01-09|07:02:28.740] Updating node                            id=84832e9ee10cfe9e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:28.746] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=84832e9ee10cfe9e
+[33mcrawler_1   |[0m INFO [01-09|07:02:29.723] Updating node                            id=833d9baeac36cf43 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:30.426] Updating node info                       client_type=erigon/v2.40.0-dev-3da15fcb/linux-amd64/go1.19.7 version=5 network_id=56  caps=[eth/66]                        fork_id="{Hash:[7 181 67 40] Next:1705996800}" height= td=291,135                        head=693136..283b87
+[33mcrawler_1   |[0m INFO [01-09|07:02:30.686] Updating node                            id=832b415e18b80f99 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:31.150] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=832b415e18b80f99
+[33mcrawler_1   |[0m INFO [01-09|07:02:31.650] Updating node                            id=832a62e87cad6046 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:32.361] GetClientInfo failed                     error="bad status handshake disconnect: too many peers" nodeID=832a62e87cad6046
+[33mcrawler_1   |[0m WARN [01-09|07:02:32.628] GetClientInfo failed                     error=EOF                                   nodeID=870410b3ac5ec953
+[33mcrawler_1   |[0m INFO [01-09|07:02:32.870] Updating node                            id=876ca71ec00f5087 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:33.867] Updating node                            id=8687845fc8aac199 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:33.899] Updating node info                       client_type=Geth/v2.2.0-beta-06240756-20231114/linux-amd64/go1.19.3 version=5 network_id=1972 caps="[eth/66 eth/67]"               fork_id="{Hash:[23 230 110 22] Next:0}"        height= td=346,134,677,977,898,858        head=81c79a..42923b
+[33mcrawler_1   |[0m WARN [01-09|07:02:34.631] GetClientInfo failed                     error="bad status handshake disconnect: useless peer" nodeID=8687845fc8aac199
+[33mcrawler_1   |[0m INFO [01-09|07:02:34.762] Updating node                            id=86c97633be6dee20 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:35.183] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=86c97633be6dee20
+[33mcrawler_1   |[0m INFO [01-09|07:02:35.602] Updating node                            id=86c0a2c80d1ccff8 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:37.589] Updating node                            id=85f414213ca8e09f seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:37.923] Updating node info                       client_type=Geth/v1.3.4-df449c2e/linux-amd64/go1.20.11 version=5 network_id=56   caps="[bsc/1 eth/66 eth/67 eth/68 les/2 les/3 les/4 snap/1]" fork_id="{Hash:[7 181 67 40] Next:0}"          height= td=69,707,881                     head=9c9d73..60554b
+[33mcrawler_1   |[0m INFO [01-09|07:02:38.546] Updating node                            id=84d7ed32f778e1f3 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:39.571] Updating node                            id=83f3a322c700083c seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:39.708] Updating node info                       client_type=Geth/v3.0.1-pulse-stable-db2c45dc/linux-amd64/go1.20.8 version=5 network_id=369  caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[252 100 236 4] Next:1150000}"  height= td=58,750,003,716,598,352,816,469 head=d4e567..cb8fa3
+[33mcrawler_1   |[0m INFO [01-09|07:02:40.397] Updating node info                       client_type=erigon/v2.54.0-aeec5221/linux-amd64/go1.20.11 version=5 network_id=10200 caps=[eth/68]                        fork_id="{Hash:[161 90 66 82] Next:0}"         height= td=231,708,131,825,107,706,987,652,208,063,906,496,124,457,284 head=5fe18c..eec32a
+[33mcrawler_1   |[0m INFO [01-09|07:02:40.567] Updating node                            id=8228feb2ecf2a9cd seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:41.060] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8228feb2ecf2a9cd
+[33mcrawler_1   |[0m INFO [01-09|07:02:44.917] Updating node                            id=8f04612389cb53be seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:45.603] GetClientInfo failed                     error="dial tcp 79.125.97.227:0: i/o timeout" nodeID=86c0a2c80d1ccff8
+[33mcrawler_1   |[0m INFO [01-09|07:02:45.649] Updating node info                       client_type=Geth/v1.13.9-unstable-0b471c31/linux-amd64/go1.21.5 version=5 network_id=38356 caps="[eth/67 eth/68 snap/1]"        fork_id="{Hash:[155 71 210 203] Next:0}"       height= td=1                              head=ac4176..fa514b
+[33mcrawler_1   |[0m INFO [01-09|07:02:45.905] Updating node                            id=8f4684fac958bc0a seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:46.901] Updating node                            id=860fd8d17b9e0413 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:46.912] Updating node info                       client_type=Geth/v1.11.6-stable-e8e7bfcf/linux-amd64/go1.19 version=5 network_id=51178 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[99 129 27 200] Next:0}"        height= td=1                              head=c366d6..3cbdcf
+[33mcrawler_1   |[0m WARN [01-09|07:02:47.403] GetClientInfo failed                     error=EOF                                     nodeID=860fd8d17b9e0413
+[33mcrawler_1   |[0m INFO [01-09|07:02:47.409] Updating node                            id=8623bb2e78b45136 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:47.610] Updating node info                       client_type=bor/v1.1.0/linux-amd64/go1.20.10       version=5 network_id=137   caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[220 8 134 92] Next:0}"         height= td=934,546,545                    head=43fda2..c3293a
+[33mcrawler_1   |[0m INFO [01-09|07:02:48.051] Updating node                            id=863d2dec55ed7be6 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:48.191] GetClientInfo failed                     error=EOF                                     nodeID=863d2dec55ed7be6
+[33mcrawler_1   |[0m INFO [01-09|07:02:49.026] Updating node                            id=88b1ffaddc36fdb7 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:49.509] GetClientInfo failed                     error=EOF                                     nodeID=88b1ffaddc36fdb7
+[33mcrawler_1   |[0m INFO [01-09|07:02:49.844] Updating node                            id=88d6fedcbd964a6e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:50.335] GetClientInfo failed                     error=EOF                                     nodeID=88d6fedcbd964a6e
+[33mcrawler_1   |[0m INFO [01-09|07:02:50.665] Updating node                            id=88f188f0b0256abb seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:50.988] GetClientInfo failed                     error=EOF                                     nodeID=88f188f0b0256abb
+[33mcrawler_1   |[0m INFO [01-09|07:02:51.556] Updating node                            id=873a75eb1b2e045a seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:51.936] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=873a75eb1b2e045a
+[33mcrawler_1   |[0m INFO [01-09|07:02:52.560] Updating node                            id=873a9b0dcfcf0f4c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:53.074] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=873a9b0dcfcf0f4c
+[33mcrawler_1   |[0m INFO [01-09|07:02:53.118] Updating node                            id=873ce4905dae647b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:53.191] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=873ce4905dae647b
+[33mcrawler_1   |[0m INFO [01-09|07:02:54.176] Updating node                            id=8736e805a01a9fa0 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:54.970] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8736e805a01a9fa0
+[33mcrawler_1   |[0m INFO [01-09|07:02:55.153] Updating node                            id=8722b287e6a08195 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:55.605] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8722b287e6a08195
+[33mcrawler_1   |[0m INFO [01-09|07:02:55.996] Updating node                            id=872648bbae06007b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:56.711] GetClientInfo failed                     error="bad status handshake disconnect: subprotocol error" nodeID=872648bbae06007b
+[33mcrawler_1   |[0m INFO [01-09|07:02:57.198] Updating node                            id=871c313569070351 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:02:57.883] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=871c313569070351
+[33mcrawler_1   |[0m INFO [01-09|07:02:58.193] Updating node                            id=871efd3ea35d79a7 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:02:58.932] Updating node info                       client_type=Geth/v1.0.0-PowBlocks-main/linux-amd64/go1.19.5 version=5 network_id=12300 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[6 217 216 63] Next:0}"         height= td=32,757,691,781,131,319,872     head=184e7b..f1bede
+[33mcrawler_1   |[0m INFO [01-09|07:03:01.415] Updating node                            id=877f490c1b1e7164 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:01.892] GetClientInfo failed                     error=EOF                                     nodeID=877f490c1b1e7164
+[33mcrawler_1   |[0m INFO [01-09|07:03:02.445] Updating node                            id=8771b7f48156a3ca seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:02.952] Updating node                            id=877495164d3af55d seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:02.960] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8771b7f48156a3ca
+[33mcrawler_1   |[0m INFO [01-09|07:03:03.151] Updating node info                       client_type=Geth/v1.3.0-testnet0-31f69f12/linux-amd64/go1.17.8 version=5 network_id=9372  caps="[eth/66 snap/1]"               fork_id="{Hash:[64 185 51 22] Next:0}"         height= td=613,207,439                    head=8f0754..167051
+[33mcrawler_1   |[0m INFO [01-09|07:03:03.794] Updating node                            id=ed29a73f5eb74971 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:04.788] Updating node                            id=bd677990ce369580 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:05.772] Updating node                            id=2fbcd2171c67f9d1 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:06.680] Updating node                            id=da52ac8575541ffe seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:07.579] Updating node                            id=ba3b8c7128d29cf4 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:08.784] Updating node                            id=a175a7f2be846671 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:09.472] Updating node                            id=aa5e5a758d8efca3 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:09.586] GetClientInfo failed                     error=EOF                                     nodeID=a175a7f2be846671
+[33mcrawler_1   |[0m INFO [01-09|07:03:11.970] Updating node                            id=310b3245cce968c0 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:12.818] Updating node                            id=300365dead15338b seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:13.660] Updating node                            id=27823dab3dd7af85 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:14.545] Updating node                            id=873cafe664f80510 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:14.929] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=873cafe664f80510
+[33mcrawler_1   |[0m WARN [01-09|07:03:15.272] GetClientInfo failed                     error=EOF                                     nodeID=27823dab3dd7af85
+[33mcrawler_1   |[0m WARN [01-09|07:03:15.332] GetClientInfo failed                     error=EOF                                     nodeID=ed29a73f5eb74971
+[36mapi_1       |[0m INFO [01-09|07:03:15.470] Dropping Cache 
+[33mcrawler_1   |[0m WARN [01-09|07:03:16.207] GetClientInfo failed                     error=EOF                                     nodeID=2fbcd2171c67f9d1
+[33mcrawler_1   |[0m INFO [01-09|07:03:16.422] Updating node                            id=872dc248a50a3c18 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:16.527] GetClientInfo failed                     error=EOF                                     nodeID=ba3b8c7128d29cf4
+[33mcrawler_1   |[0m WARN [01-09|07:03:16.535] GetClientInfo failed                     error=EOF                                     nodeID=da52ac8575541ffe
+[33mcrawler_1   |[0m WARN [01-09|07:03:16.563] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=872dc248a50a3c18
+[33mcrawler_1   |[0m INFO [01-09|07:03:17.435] Updating node                            id=872f10b06db752e5 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:17.946] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=872f10b06db752e5
+[33mcrawler_1   |[0m WARN [01-09|07:03:19.418] GetClientInfo failed                     error=EOF                                     nodeID=310b3245cce968c0
+[33mcrawler_1   |[0m INFO [01-09|07:03:19.470] Updating node                            id=8713ac84df2db5b2 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:19.473] GetClientInfo failed                     error=EOF                                     nodeID=bd677990ce369580
+[33mcrawler_1   |[0m WARN [01-09|07:03:19.972] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8713ac84df2db5b2
+[33mcrawler_1   |[0m INFO [01-09|07:03:20.488] Updating node                            id=8716dbe1d0925785 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:20.990] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8716dbe1d0925785
+[33mcrawler_1   |[0m INFO [01-09|07:03:21.448] Updating node                            id=8705760e9add6fc1 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:22.142] Updating node info                       client_type=erigon/v2.40.0-dev-3da15fcb/linux-amd64/go1.19.7 version=5 network_id=56    caps=[eth/66]                        fork_id="{Hash:[7 181 67 40] Next:1705996800}" height= td=291,135                        head=693136..283b87
+[33mcrawler_1   |[0m INFO [01-09|07:03:22.409] Updating node                            id=877c4f38fd276902 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:22.855] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=877c4f38fd276902
+[33mcrawler_1   |[0m WARN [01-09|07:03:24.567] GetClientInfo failed                     error="read tcp 172.20.0.2:47836->13.238.14.35:30303: i/o timeout" nodeID=aa5e5a758d8efca3
+[33mcrawler_1   |[0m INFO [01-09|07:03:24.918] Updating node                            id=8738d01a59bb4e5e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:25.691] GetClientInfo failed                     error="bad status handshake disconnect: disconnect requested" nodeID=8738d01a59bb4e5e
+[33mcrawler_1   |[0m INFO [01-09|07:03:25.814] Updating node                            id=873da91f126ad6d6 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:26.208] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=873da91f126ad6d6
+[33mcrawler_1   |[0m INFO [01-09|07:03:26.729] Updating node                            id=872d31a911444cae seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:03:27.349] Updating node info                       client_type=ronin/v2.7.0-5a455cee/linux-amd64/go1.20 version=5 network_id=2021  caps="[eth/66 ronin/1 snap/1]"       fork_id="{Hash:[67 242 86 165] Next:0}"        height= td=158,496,168                    head=3afca7..43c556
+[33mcrawler_1   |[0m INFO [01-09|07:03:27.730] Updating node                            id=87190c4c0050c4b3 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:27.993] GetClientInfo failed                     error="read tcp 172.20.0.2:46388->176.34.188.8:30303: i/o timeout" nodeID=300365dead15338b
+[33mcrawler_1   |[0m WARN [01-09|07:03:28.211] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=87190c4c0050c4b3
+[33mcrawler_1   |[0m INFO [01-09|07:03:29.904] Updating node                            id=87131a380d76be4e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:30.396] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=87131a380d76be4e
+[33mcrawler_1   |[0m INFO [01-09|07:03:31.158] Updating node                            id=870b73d15ad49f1c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:31.840] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=870b73d15ad49f1c
+[33mcrawler_1   |[0m INFO [01-09|07:03:33.499] Updating node                            id=871b761cc40f797b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:34.201] GetClientInfo failed                     error="bad status handshake disconnect: subprotocol error" nodeID=871b761cc40f797b
+[33mcrawler_1   |[0m INFO [01-09|07:03:57.945] Updating node                            id=8718c6e12235d0b2 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:58.455] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=8718c6e12235d0b2
+[33mcrawler_1   |[0m INFO [01-09|07:03:58.870] Updating node                            id=1309c345d3ad062c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:03:59.057] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=1309c345d3ad062c
+[33mcrawler_1   |[0m INFO [01-09|07:04:00.617] Updating node                            id=1cfe7818470f8d29 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:00.861] Updating node                            id=1d4aab9736c10c12 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:01.096] GetClientInfo failed                     error=EOF                                     nodeID=1cfe7818470f8d29
+[33mcrawler_1   |[0m WARN [01-09|07:04:01.353] GetClientInfo failed                     error=EOF                                     nodeID=1d4aab9736c10c12
+[33mcrawler_1   |[0m INFO [01-09|07:04:02.215] Updating node                            id=35ed3398324ab20e seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:02.938] Updating node info                       client_type=Nodecrawler/v1.13.5-stable/linux-amd64/go1.21.5 version=5 network_id=1     caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[252 100 236 4] Next:1150000}"  height= td=231,708,131,825,107,706,987,652,208,063,906,496,124,457,284 head=d4e567..cb8fa3
+[33mcrawler_1   |[0m INFO [01-09|07:04:03.197] Updating node                            id=3670282138b8c2ae seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:03.680] GetClientInfo failed                     error=EOF                                     nodeID=3670282138b8c2ae
+[33mcrawler_1   |[0m INFO [01-09|07:04:04.657] Updating node                            id=37357bda4188bcaf seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:05.111] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=37357bda4188bcaf
+[33mcrawler_1   |[0m INFO [01-09|07:04:05.675] Updating node                            id=3b138a179f61a37f seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:06.171] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=3b138a179f61a37f
+[33mcrawler_1   |[0m INFO [01-09|07:04:06.497] Updating node                            id=3c73bff5cccfc84c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:06.827] GetClientInfo failed                     error=EOF                                     nodeID=3c73bff5cccfc84c
+[33mcrawler_1   |[0m INFO [01-09|07:04:07.473] Updating node                            id=218f6c4701d3916b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:07.959] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=218f6c4701d3916b
+[33mcrawler_1   |[0m INFO [01-09|07:04:08.309] Updating node                            id=234a1218b076fc41 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:08.659] GetClientInfo failed                     error=EOF                                     nodeID=234a1218b076fc41
+[33mcrawler_1   |[0m INFO [01-09|07:04:09.150] Updating node                            id=2cd601842e6392da seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:09.499] GetClientInfo failed                     error=EOF                                     nodeID=2cd601842e6392da
+[33mcrawler_1   |[0m INFO [01-09|07:04:10.142] Updating node                            id=2f5ea6e7406f6f42 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:10.629] GetClientInfo failed                     error=EOF                                     nodeID=2f5ea6e7406f6f42
+[33mcrawler_1   |[0m INFO [01-09|07:04:13.635] Updating node                            id=10c24e4a17c9bb8a seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:14.130] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=10c24e4a17c9bb8a
+[36mapi_1       |[0m ERROR[01-09|07:04:15.474] Failure in transferring new nodes        err="error reading nodes: SQL logic error: no such table: nodes (1)"
+[33mcrawler_1   |[0m INFO [01-09|07:04:17.113] Updating node                            id=ff2129aa65fee439 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:17.598] GetClientInfo failed                     error=EOF                                     nodeID=ff2129aa65fee439
+[33mcrawler_1   |[0m INFO [01-09|07:04:18.102] Updating node                            id=4e887763fc4674a9 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:18.341] Updating node                            id=511d8918c8624382 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:18.582] GetClientInfo failed                     error=EOF                                     nodeID=4e887763fc4674a9
+[33mcrawler_1   |[0m WARN [01-09|07:04:18.825] GetClientInfo failed                     error=EOF                                     nodeID=511d8918c8624382
+[33mcrawler_1   |[0m INFO [01-09|07:04:19.314] Updating node                            id=3e5163a3ac437895 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:19.801] GetClientInfo failed                     error=EOF                                     nodeID=3e5163a3ac437895
+[33mcrawler_1   |[0m INFO [01-09|07:04:20.301] Updating node                            id=03f96e18d1de9b5a seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:20.789] GetClientInfo failed                     error=EOF                                     nodeID=03f96e18d1de9b5a
+[33mcrawler_1   |[0m INFO [01-09|07:04:21.278] Updating node                            id=3b2f09056cb90355 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:21.770] GetClientInfo failed                     error=EOF                                     nodeID=3b2f09056cb90355
+[33mcrawler_1   |[0m INFO [01-09|07:04:22.269] Updating node                            id=4683c4fbc9404b8c seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:22.752] GetClientInfo failed                     error=EOF                                     nodeID=4683c4fbc9404b8c
+[33mcrawler_1   |[0m INFO [01-09|07:04:23.242] Updating node                            id=f97a8b0edcfdd9df seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:23.726] GetClientInfo failed                     error=EOF                                     nodeID=f97a8b0edcfdd9df
+[33mcrawler_1   |[0m INFO [01-09|07:04:24.234] Updating node                            id=66f26abcac5c5c9d seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:24.715] GetClientInfo failed                     error=EOF                                     nodeID=66f26abcac5c5c9d
+[33mcrawler_1   |[0m INFO [01-09|07:04:25.224] Updating node                            id=ff60e345737e4358 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:25.709] GetClientInfo failed                     error=EOF                                     nodeID=ff60e345737e4358
+[33mcrawler_1   |[0m INFO [01-09|07:04:26.205] Updating node                            id=c377fcb7fb562b2f seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:26.694] GetClientInfo failed                     error=EOF                                     nodeID=c377fcb7fb562b2f
+[33mcrawler_1   |[0m INFO [01-09|07:04:27.186] Updating node                            id=ea8a0731bfe6339b seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:27.675] GetClientInfo failed                     error=EOF                                     nodeID=ea8a0731bfe6339b
+[33mcrawler_1   |[0m INFO [01-09|07:04:28.180] Updating node                            id=681b5e2402367058 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:28.438] GetClientInfo failed                     error="dial tcp 15.204.47.194:30313: connect: connection refused" nodeID=681b5e2402367058
+[33mcrawler_1   |[0m INFO [01-09|07:04:29.194] Updating node                            id=af511e13b7258e7e seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:29.694] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=af511e13b7258e7e
+[33mcrawler_1   |[0m INFO [01-09|07:04:31.414] Updating node                            id=399c52a4d87e66bb seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:31.869] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=399c52a4d87e66bb
+[33mcrawler_1   |[0m INFO [01-09|07:04:32.277] Updating node                            id=38ddfbe547f3c89d seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:32.630] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=38ddfbe547f3c89d
+[33mcrawler_1   |[0m INFO [01-09|07:04:33.272] Updating node                            id=e843a6c357c545d7 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:34.050] Updating node info                       client_type=Geth/v1.11.6-stable-ea9e62ca/linux-amd64/go1.20.3 version=5 network_id=59140 caps="[eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[144 105 19 165] Next:0}"       height= td=3,691,621                      head=509783..c7a191
+[33mcrawler_1   |[0m INFO [01-09|07:04:34.267] Updating node                            id=5cffcd67cfc9dbbf seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:34.774] Updating node                            id=9ab9ae0b7aa9ea9b seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:35.038] Updating node info                       client_type=Geth/v1.3.6-ea09dad1-20231218/linux-amd64/go1.20.3 version=5 network_id=56    caps="[bsc/1 eth/66 eth/67 eth/68 snap/1]" fork_id="{Hash:[7 181 67 40] Next:1705996800}" height= td=69,707,959                     head=6f6a38..4ac77d
+[33mcrawler_1   |[0m INFO [01-09|07:04:35.047] Updating node info                       client_type=bor/v0.3.3-stable/linux-amd64/go1.19.1   version=5 network_id=137   caps="[eth/66 snap/1]"                     fork_id="{Hash:[79 47 113 204] Next:0}"        height= td=768,568,196                    head=f5866e..ec2486
+[33mcrawler_1   |[0m INFO [01-09|07:04:35.740] Updating node                            id=2a02c0d7c83cf2d5 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:36.452] Updating node info                       client_type=erigon/v2.40.0-dev-3da15fcb/linux-amd64/go1.19.7 version=5 network_id=56    caps=[eth/66]                              fork_id="{Hash:[7 181 67 40] Next:1705996800}" height= td=291,135                        head=693136..283b87
+[33mcrawler_1   |[0m INFO [01-09|07:04:37.677] Updating node                            id=29695d7986d1eef2 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:38.043] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=29695d7986d1eef2
+[33mcrawler_1   |[0m INFO [01-09|07:04:38.585] Updating node                            id=12b6ea279f1d2424 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:39.516] Updating node                            id=2c7c1f19b75c22fc seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:39.914] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=2c7c1f19b75c22fc
+[33mcrawler_1   |[0m INFO [01-09|07:04:40.464] Updating node                            id=9aaeb50cd0b74b3a seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:40.924] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=9aaeb50cd0b74b3a
+[33mcrawler_1   |[0m INFO [01-09|07:04:42.954] Updating node                            id=f3902a8efb70c794 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:43.421] GetClientInfo failed                     error=EOF                                     nodeID=f3902a8efb70c794
+[33mcrawler_1   |[0m INFO [01-09|07:04:43.836] Updating node                            id=e41b3b11bc633cf2 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:44.214] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=e41b3b11bc633cf2
+[33mcrawler_1   |[0m WARN [01-09|07:04:44.624] GetClientInfo failed                     error="dial tcp 89.64.14.214:5029: connect: connection refused" nodeID=12b6ea279f1d2424
+[33mcrawler_1   |[0m INFO [01-09|07:04:46.137] Updating node                            id=67a32d4e0cae2789 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:46.575] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=67a32d4e0cae2789
+[33mcrawler_1   |[0m INFO [01-09|07:04:46.954] Updating node                            id=46e3d339784269ab seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:47.269] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=46e3d339784269ab
+[33mcrawler_1   |[0m INFO [01-09|07:04:52.836] Updating node                            id=10e622676586e6ba seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:04:53.604] Updating node info                       client_type=                                         version=5 network_id=1     caps=[eth/66]                              fork_id="{Hash:[252 100 236 4] Next:1150000}"  height= td=231,708,131,825,107,706,987,652,208,063,906,496,124,457,284 head=d4e567..cb8fa3
+[33mcrawler_1   |[0m INFO [01-09|07:04:53.842] Updating node                            id=f6076908a72e3dc8 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:54.359] GetClientInfo failed                     error=EOF                                     nodeID=f6076908a72e3dc8
+[33mcrawler_1   |[0m INFO [01-09|07:04:56.228] Updating node                            id=7706990307b4b570 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:56.599] GetClientInfo failed                     error=EOF                                     nodeID=7706990307b4b570
+[33mcrawler_1   |[0m INFO [01-09|07:04:57.174] Updating node                            id=4838e9c9fb19ee19 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:57.621] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=4838e9c9fb19ee19
+[33mcrawler_1   |[0m INFO [01-09|07:04:57.892] Updating node                            id=9fb8012a634a95bd seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:04:58.108] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=9fb8012a634a95bd
+[33mcrawler_1   |[0m INFO [01-09|07:04:59.047] Updating node                            id=a730f69316430bed seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:05:00.124] Updating node info                       client_type=Geth/Buye/v1.10.0-stable(quorum-v22.1.0)/linux-amd64/go1.19.4 version=5 network_id=190,260 caps="[eth/64 eth/65 eth/66 istanbul/64 istanbul/99 istanbul/100 snap/1]" fork_id="{Hash:[124 78 210 169] Next:0}"       height= td=2,991,596                      head=123922..0e7864
+[33mcrawler_1   |[0m INFO [01-09|07:05:01.299] Updating node                            id=bd0f52c3d1fab8aa seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:05:01.796] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=bd0f52c3d1fab8aa
+[33mcrawler_1   |[0m INFO [01-09|07:05:04.949] Updating node                            id=7d4c80d359e81501 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:05:05.431] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=7d4c80d359e81501
+[33mcrawler_1   |[0m INFO [01-09|07:05:06.275] Updating node                            id=2eaad8d6c77b0b80 seq=0                 score=1
+[33mcrawler_1   |[0m WARN [01-09|07:05:06.610] GetClientInfo failed                     error="bad hello handshake disconnect: too many peers" nodeID=2eaad8d6c77b0b80
+[33mcrawler_1   |[0m INFO [01-09|07:05:07.267] Updating node                            id=9fd03bc1b2b3ae08 seq=0                 score=1
+[33mcrawler_1   |[0m INFO [01-09|07:05:08.005] Updating node info                       client_type=                                         version=5 network_id=59144   caps=[eth/66]                              fork_id="{Hash:[12 29 198 194] Next:0}"        height= td=0                              head=3ec8a1..51b18e
+[36mnode-crawler_api_1 exited with code 2
+[0m[33mnode-crawler_crawler_1 exited with code 2
+[0m
